@@ -40,24 +40,25 @@ class TextCleaner:
         # check each word for the stated criteria
         for i, word in enumerate(words):
 
-            # is it a number? or is it something surrounded by brackets?
-            if not is_number(word) and not (word[0]=='[' and word[-1]==']'):
+            try:
+                # is it a number? or is it something surrounded by brackets?
+                if not is_number(word) and not (word[0]=='[' and word[-1]==']'):
 
-                # does it start with a number or a footnote character?
-                while is_number(words[i][0]) or words[i][0] in self.fn_chars:
-                    words[i] = words[i][1:]
+                    # does it start with a number or a footnote character?
+                    while is_number(words[i][0]) or words[i][0] in self.fn_chars:
+                        words[i] = words[i][1:]
 
-                # does it end with one?
-                while is_number(words[i][-1]) or words[i][-1] in self.fn_chars:
-                    words[i] = words[i][0:-1]
+                    # does it end with one?
+                    while is_number(words[i][-1]) or words[i][-1] in self.fn_chars:
+                        words[i] = words[i][0:-1]
 
-                try:
-                    # does it end with one followed by a punctuation character?
-                    if words[i][-1] in self.punct_chars:
-                        while is_number(words[i][-2]) or words[i][-2] in self.fn_chars:
-                            words[i] = words[i][0:-2] + words[i][-1]
-                except IndexError:
-                    print("Could not process word:   " + words[i])
+                        # does it end with one followed by a punctuation character?
+                        if words[i][-1] in self.punct_chars:
+                            while is_number(words[i][-2]) or words[i][-2] in self.fn_chars:
+                                words[i] = words[i][0:-2] + words[i][-1]
+
+            except IndexError:
+                print("Could not process word:   " + words[i])
 
         # recreate original string with cleaned words
         output_string = ' '.join(words)
