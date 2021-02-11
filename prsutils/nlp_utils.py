@@ -51,10 +51,13 @@ class TextCleaner:
                 while is_number(words[i][-1]) or words[i][-1] in self.fn_chars:
                     words[i] = words[i][0:-1]
 
-                # does it end with one followed by a punctuation character?
-                if words[i][-1] in self.punct_chars:
-                    while is_number(words[i][-2]) or words[i][-2] in self.fn_chars:
-                        words[i] = words[i][0:-2] + words[i][-1]
+                try:
+                    # does it end with one followed by a punctuation character?
+                    if words[i][-1] in self.punct_chars:
+                        while is_number(words[i][-2]) or words[i][-2] in self.fn_chars:
+                            words[i] = words[i][0:-2] + words[i][-1]
+                except IndexError:
+                    print("Could not process word:   " + words[i])
 
         # recreate original string with cleaned words
         output_string = ' '.join(words)
